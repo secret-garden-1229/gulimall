@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: gulimall-product
+  datasource:
+    url: jdbc:mysql://192.168.10.128:3307/gulimall_pms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false
+    password: root
+    data-username: root
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+server:
+  port: 9004
