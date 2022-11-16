@@ -14,5 +14,10 @@
         <result property="sort" column="sort"/>
     </resultMap>
 
+    <update id="updateBrandByIds">
+        UPDATE pms_brand set show_status=#{showStatus} where brand_id=#{brandId}
+    </update>
+
+
 
 </mapper>

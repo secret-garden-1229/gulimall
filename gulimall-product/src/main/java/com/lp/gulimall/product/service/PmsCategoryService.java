@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lp.gulimall.utils.PageUtils;
 import com.lp.gulimall.product.entity.PmsCategoryEntity;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,10 @@ import java.util.Map;
 public interface PmsCategoryService extends IService<PmsCategoryEntity> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<PmsCategoryEntity> cascadeTree(Map<String, Object> params);
+
+
+    void removeCategoryById(List<Long> longs);
 }
 

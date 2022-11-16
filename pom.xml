@@ -22,6 +22,7 @@
         <module>gulimall-member</module>
         <module>gulimall-order</module>
         <module>gulimall-ware</module>
+        <module>gete-way</module>
     </modules>
 
 </project>

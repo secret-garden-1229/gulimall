@@ -3,6 +3,7 @@ server:
 
 # mysql
 spring:
+
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     #MySQL配置

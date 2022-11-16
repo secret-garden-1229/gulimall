@@ -1,6 +1,8 @@
 package com.lp.gulimall.product.controller;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +43,13 @@ public class PmsCategoryController {
         return R.ok().put("page", page);
     }
 
+    @RequestMapping("/list/cascade")
+    //@RequiresPermissions("product:pmscategory:list")
+    public R Cascade(@RequestParam Map<String, Object> params){
+        List<PmsCategoryEntity> page = pmsCategoryService.cascadeTree(params);
+
+        return R.ok().put("data", page);
+    }
 
     /**
      * 信息
@@ -59,6 +68,7 @@ public class PmsCategoryController {
     @RequestMapping("/save")
     //@RequiresPermissions("product:pmscategory:save")
     public R save(@RequestBody PmsCategoryEntity pmsCategory){
+        System.out.println("========"+pmsCategory);
 		pmsCategoryService.save(pmsCategory);
 
         return R.ok();
@@ -75,14 +85,24 @@ public class PmsCategoryController {
         return R.ok();
     }
 
+    @RequestMapping("/update/category")
+    //@RequiresPermissions("product:pmscategory:update")
+    public R updateCategory(@RequestBody PmsCategoryEntity[] pmsCategory){
+        pmsCategoryService.updateBatchById(Arrays.asList(pmsCategory));
+        System.out.println("pmsCategory===="+pmsCategory+"size====="+pmsCategory.length);
+        Arrays.asList(pmsCategory).forEach(System.out::println);
+        return R.ok();
+    }
+
     /**
      * 删除
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:pmscategory:delete")
     public R delete(@RequestBody Long[] catIds){
-		pmsCategoryService.removeByIds(Arrays.asList(catIds));
-
+		//pmsCategoryService.removeByIds(Arrays.asList(catIds));
+        List<Long> longs = Arrays.asList(catIds);
+        pmsCategoryService.removeCategoryById(longs);
         return R.ok();
     }
 

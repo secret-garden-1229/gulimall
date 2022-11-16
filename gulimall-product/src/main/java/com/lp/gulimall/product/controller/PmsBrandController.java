@@ -1,20 +1,20 @@
 package com.lp.gulimall.product.controller;
 
+import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.lp.gulimall.product.entity.PmsBrandEntity;
 import com.lp.gulimall.product.service.PmsBrandService;
 import com.lp.gulimall.utils.PageUtils;
 import com.lp.gulimall.utils.R;
-
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -29,6 +29,26 @@ import com.lp.gulimall.utils.R;
 public class PmsBrandController {
     @Autowired
     private PmsBrandService pmsBrandService;
+
+    @PostMapping(value = "/saveImage")
+    private R saveImage( @RequestParam(value = "file",required = false) MultipartFile file) {
+        String path = this.getClass().getClassLoader().getResource("").getPath().toString();
+        String formatDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String filepath =path+formatDate;
+        File storageFile=new File(filepath);
+        if (!storageFile.exists()){
+            storageFile.mkdirs();
+        }
+        try {
+            file.transferTo(storageFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Map<String,Object> map=new HashMap<>();
+        map.put("dir",filepath);
+        return R.ok().put("data",map);
+    }
 
     /**
      * 列表
@@ -60,7 +80,7 @@ public class PmsBrandController {
     //@RequiresPermissions("product:pmsbrand:save")
     public R save(@RequestBody PmsBrandEntity pmsBrand){
 		pmsBrandService.save(pmsBrand);
-
+        System.out.println("1");
         return R.ok();
     }
 
@@ -70,8 +90,8 @@ public class PmsBrandController {
     @RequestMapping("/update")
     //@RequiresPermissions("product:pmsbrand:update")
     public R update(@RequestBody PmsBrandEntity pmsBrand){
-		pmsBrandService.updateById(pmsBrand);
-
+        System.out.println(pmsBrand);
+		pmsBrandService.updateBrandByIds(pmsBrand);
         return R.ok();
     }
 
@@ -81,8 +101,8 @@ public class PmsBrandController {
     @RequestMapping("/delete")
     //@RequiresPermissions("product:pmsbrand:delete")
     public R delete(@RequestBody Long[] brandIds){
-		pmsBrandService.removeByIds(Arrays.asList(brandIds));
-
+//		pmsBrandService.removeByIds(Arrays.asList(brandIds));
+        pmsBrandService.removeBrandByIds(Arrays.asList(brandIds));
         return R.ok();
     }
 
